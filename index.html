@@ -1,0 +1,2946 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahorro 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.0.2/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #3b82f6;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #f1f5f9;
+            --card-bg: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            --gradient-success: linear-gradient(135deg, #10b981, #34d399);
+            --gradient-warning: linear-gradient(135deg, #f59e0b, #fbbf24);
+            --gradient-danger: linear-gradient(135deg, #ef4444, #f87171);
+            --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6, #d946ef);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.12);
+            --radius: 20px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --animation-speed: 0.6s;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 20%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        
+        /* Header premium */
+        .header {
+            text-align: center;
+            padding: 50px 0 40px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+        
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .logo-container:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .logo-container i {
+            font-size: 3.5rem;
+            color: white;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            font-weight: 400;
+            max-width: 800px;
+            margin: 0 auto 25px;
+            color: var(--gray);
+        }
+        
+        .header-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .header-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Grid principal mejorado */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 35px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 1400px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Nuevo: Panel de gamificación */
+        .gamification-panel {
+            grid-column: 1 / -1;
+            margin-bottom: 35px;
+        }
+        
+        .achievements-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 10px;
+            scrollbar-width: thin;
+        }
+        
+        .achievement {
+            flex: 0 0 auto;
+            width: 120px;
+            text-align: center;
+            padding: 20px 15px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .achievement:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .achievement.unlocked {
+            border-color: var(--success);
+        }
+        
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+        
+        .achievement.unlocked .achievement-icon {
+            color: var(--success);
+        }
+        
+        .achievement-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .achievement-progress {
+            height: 4px;
+            background: var(--light-gray);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .achievement-progress-bar {
+            height: 100%;
+            background: var(--gradient-success);
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        /* Nuevo: Panel de gráficas */
+        .charts-panel {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 1200px) {
+            .charts-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .chart-container {
+            height: 400px;
+            position: relative;
+        }
+        
+        .chart-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .chart-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-btn {
+            padding: 8px 16px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chart-btn.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        
+        /* Tarjetas premium */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            transition: var(--transition);
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(59, 130, 246, 0.05);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card.glow {
+            animation: cardGlow 3s infinite alternate;
+        }
+        
+        @keyframes cardGlow {
+            0% { box-shadow: var(--shadow); }
+            100% { box-shadow: 0 30px 60px rgba(59, 130, 246, 0.15); }
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            color: white;
+            font-size: 1.8rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .goal-icon {
+            background: var(--gradient-primary);
+        }
+        
+        .progress-icon {
+            background: var(--gradient-success);
+        }
+        
+        .history-icon {
+            background: var(--gradient-dark);
+        }
+        
+        .chart-icon {
+            background: var(--gradient-purple);
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        
+        .card-subtitle {
+            color: var(--gray);
+            font-size: 1rem;
+            margin-top: 5px;
+        }
+        
+        /* Sección del objetivo premium */
+        .goal-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .goal-image-container {
+            height: 320px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+        }
+        
+        .goal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+        }
+        
+        .goal-image-container:hover .goal-image {
+            transform: scale(1.08);
+        }
+        
+        .goal-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+            color: white;
+            padding: 30px;
+            transform: translateY(0);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .goal-image-container:hover .goal-overlay {
+            opacity: 1;
+        }
+        
+        .goal-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .goal-info {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .goal-stat {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .goal-stat:hover {
+            background: white;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+        }
+        
+        /* Barra de progreso premium */
+        .progress-container {
+            margin: 35px 0;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .progress-percentage {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+        
+        .progress-bar-container {
+            height: 24px;
+            background-color: var(--light-gray);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient-success);
+            width: 0%;
+            border-radius: 12px;
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-milestones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .milestone {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            position: relative;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--light-gray);
+            cursor: pointer;
+        }
+        
+        .milestone.active {
+            background: var(--success);
+            box-shadow: 0 0 0 2px var(--success), 0 0 20px rgba(16, 185, 129, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 2px var(--success), 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 2px var(--success), 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 2px var(--success), 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+        
+        /* Contador de días premium */
+        .days-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .days-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .day-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .day-number {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Formulario premium */
+        .form-container {
+            background: var(--light-gray);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-header {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            background: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .quick-amounts {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .quick-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+        
+        .quick-btn:hover {
+            background: var(--light-gray);
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .btn-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .btn-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .btn {
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-warning {
+            background: var(--gradient-warning);
+            color: white;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        .btn-warning:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn-danger {
+            background: var(--gradient-danger);
+            color: white;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4);
+        }
+        
+        .btn-dark {
+            background: var(--gradient-dark);
+            color: white;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+        }
+        
+        .btn-dark:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.4);
+        }
+        
+        /* Historial premium */
+        .history-section {
+            grid-column: 1 / -1;
+        }
+        
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .history-tabs {
+            display: flex;
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 6px;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+        
+        .tab {
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+        
+        .tab.active {
+            background: white;
+            color: var(--secondary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .history-stats {
+            display: flex;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .history-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        
+        .history-stat {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            min-width: 120px;
+        }
+        
+        .history-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .history-stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .history-container {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .history-table thead {
+            position: sticky;
+            top: 0;
+            background: white;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+            border-radius: 12px;
+        }
+        
+        .history-table th {
+            padding: 22px 20px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid var(--light-gray);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+        
+        .history-table th::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+        }
+        
+        .history-table td {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+        
+        .history-table tbody tr:hover td {
+            background: rgba(59, 130, 246, 0.03);
+        }
+        
+        .history-date-cell {
+            min-width: 140px;
+        }
+        
+        .history-date {
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .history-day {
+            display: inline-block;
+            background: var(--light-gray);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        .history-amount {
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+        
+        .amount-positive {
+            color: var(--success);
+        }
+        
+        .amount-negative {
+            color: var(--danger);
+        }
+        
+        .amount-zero {
+            color: var(--warning);
+        }
+        
+        .history-description {
+            color: var(--gray);
+            max-width: 300px;
+            line-height: 1.6;
+        }
+        
+        .history-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light-gray);
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1.1rem;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-btn.edit:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .action-btn.delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .empty-history {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            color: var(--light-gray);
+            opacity: 0.5;
+        }
+        
+        .empty-text {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Footer premium */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--gray);
+            font-size: 1rem;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+            margin-top: 40px;
+        }
+        
+        /* Notificaciones premium */
+        .notification {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            padding: 25px 30px;
+            border-radius: 16px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            max-width: 450px;
+            transform: translateX(150%);
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(52, 211, 153, 0.9));
+        }
+        
+        .notification-warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(251, 191, 36, 0.9));
+        }
+        
+        .notification-info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(139, 92, 246, 0.9));
+        }
+        
+        .notification-error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(248, 113, 113, 0.9));
+        }
+        
+        .notification-icon {
+            font-size: 2rem;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Modal premium */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
+            transform: translateY(30px);
+            transition: transform 0.4s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1.2rem;
+            color: var(--gray);
+        }
+        
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            .card {
+                padding: 30px;
+            }
+            
+            .goal-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .history-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header {
+                padding: 30px 0;
+            }
+            
+            .history-tabs {
+                width: 100%;
+                overflow-x: auto;
+            }
+            
+            .history-stats {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+        
+        /* Animaciones de entrada */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        
+        /* Scrollbar premium */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+        }
+        
+        /* Efectos de partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+        
+        /* Animación de confeti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            z-index: 9999;
+        }
+        
+        /* Indicador de meta alcanzada */
+        .goal-achieved {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            color: gold;
+            z-index: 100;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: celebrate 2s ease-in-out infinite;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="goal-achieved" id="goalAchieved">
+        <i class="fas fa-trophy"></i>
+    </div>
+    
+    <div class="container">
+        <!-- Header premium -->
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-motorcycle"></i>
+            </div>
+            <h1>Ahorro 2026</h1>
+            <p class="subtitle">"Cuídate mucho cuando llegues a la cima,Sigue luchando pa quedarte allá arriba".</p>
+            <div class="header-controls">
+                <div class="header-btn" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Modo Oscuro</span>
+                </div>
+                <div class="header-btn" id="soundToggle">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Sonido ON</span>
+                </div>
+                <div class="header-btn" id="exportAllBtn">
+                    <i class="fas fa-file-export"></i>
+                    <span>Exportar Todo</span>
+                </div>
+                <div class="header-btn" id="shareBtn">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Compartir</span>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Panel de gamificación -->
+            <section class="gamification-panel fade-in-up">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon goal-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Logros y Recompensas</h2>
+                            <p class="card-subtitle">Desbloquea logros mientras ahorras</p>
+                        </div>
+                    </div>
+                    
+                    <div class="achievements-container" id="achievementsContainer">
+                        <!-- Logros se generarán con JavaScript -->
+                    </div>
+                </div>
+            </section>
+            
+            <div class="main-grid">
+                <!-- Sección del objetivo premium -->
+                <section class="card fade-in-up glow">
+                    <div class="card-header">
+                        <div class="card-icon goal-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Mi Objetivo Visual</h2>
+                            <p class="card-subtitle">Visualiza la moto de tus sueños</p>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-container">
+                        <div class="goal-image-container">
+                            <img id="goalImage" src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Imagen de la moto que quieres" class="goal-image">
+                            <div class="goal-overlay">
+                                <h3 style="font-size: 1.8rem; margin-bottom: 8px;">Moto de Ensueño</h3>
+                                <p style="opacity: 0.9;">Meta: $70,000 MXN • Ahorrado: <span id="overlaySavings">$0</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-info">
+                            <div class="goal-stat">
+                                <div class="stat-value" id="currentSavings">$0</div>
+                                <div class="stat-label">Ahorrado Actual</div>
+                            </div>
+                            <div class="goal-stat">
+                                <div class="stat-value" id="remainingAmount">$50,000</div>
+                                <div class="stat-label">Faltante</div>
+                            </div>
+                            <div class="goal-stat">
+                                <div class="stat-value" id="progressPercentage">0%</div>
+                                <div class="stat-label">Completado</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="uploadImageBtn" style="width: 100%; margin-top: 20px;">
+                        <i class="fas fa-camera"></i> Cambiar Imagen de la Moto
+                    </button>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                </section>
+                
+                <!-- Sección de progreso premium -->
+                <section class="card fade-in-up delay-1">
+                    <div class="card-header">
+                        <div class="card-icon progress-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Mi Progreso</h2>
+                            <p class="card-subtitle">Sigue tu avance diario</p>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <div class="progress-percentage" id="progressPercentageValue">0%</div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">Meta: $50,000</div>
+                                <div style="font-size: 0.9rem; color: var(--gray);">Fecha límite: 31 Dic 2026</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar"></div>
+                        </div>
+                        
+                        <div class="progress-milestones">
+                            <div class="milestone" data-percent="0" data-amount="0"></div>
+                            <div class="milestone" data-percent="25" data-amount="12500"></div>
+                            <div class="milestone" data-percent="50" data-amount="25000"></div>
+                            <div class="milestone" data-percent="75" data-amount="37500"></div>
+                            <div class="milestone" data-percent="100" data-amount="50000"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="days-container">
+                        <div class="day-card">
+                            <div class="day-number" id="daysPassed">0</div>
+                            <div class="stat-label">Días Transcurridos</div>
+                        </div>
+                        <div class="day-card">
+                            <div class="day-number" id="daysRemaining">365</div>
+                            <div class="stat-label">Días Restantes</div>
+                        </div>
+                        <div class="day-card">
+                            <div class="day-number" id="dailyGoal">$200</div>
+                            <div class="stat-label">Meta Diaria</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-container">
+                        <div class="form-header">
+                            <i class="fas fa-plus-circle"></i> Registrar Movimiento
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Cantidad (MXN)</label>
+                                <input type="number" id="amount" class="form-input" placeholder="Ej. 1500" min="-100000" max="100000" step="100">
+                                <small style="color: var(--gray); font-size: 0.9rem; display: block; margin-top: 8px;">Usa 0 para registrar días sin ahorro</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Descripción</label>
+                                <input type="text" id="description" class="form-input" placeholder="Ej. Pago quincenal, regalo, etc.">
+                            </div>
+                        </div>
+                        
+                        <div class="quick-amounts">
+                            <div class="form-label">Cantidades rápidas:</div>
+                            <button class="quick-btn" data-amount="100">$100</button>
+                            <button class="quick-btn" data-amount="500">$500</button>
+                            <button class="quick-btn" data-amount="1000">$1,000</button>
+                            <button class="quick-btn" data-amount="2000">$2,000</button>
+                            <button class="quick-btn" data-amount="5000">$5,000</button>
+                        </div>
+                        
+                        <div class="btn-container">
+                            <button class="btn btn-success" id="addSavingsBtn">
+                                <i class="fas fa-plus-circle"></i> Agregar
+                            </button>
+                            <button class="btn btn-warning" id="addZeroBtn">
+                                <i class="far fa-calendar-times"></i> Día Cero
+                            </button>
+                            <button class="btn btn-danger" id="withdrawBtn">
+                                <i class="fas fa-minus-circle"></i> Retirar
+                            </button>
+                            <button class="btn btn-dark" id="resetBtn">
+                                <i class="fas fa-redo"></i> Reiniciar
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <!-- Panel de gráficas -->
+            <section class="charts-panel fade-in-up delay-2">
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <div class="card-icon chart-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Gráfica de Ahorros</h2>
+                            <p class="card-subtitle">Evolución de tu dinero día a día</p>
+                        </div>
+                        <div class="chart-controls">
+                            <button class="chart-btn active" data-chart-type="line">Línea</button>
+                            <button class="chart-btn" data-chart-type="bar">Barras</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="savingsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card chart-card">
+                    <div class="card-header">
+                        <div class="card-icon chart-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div>
+                            <h2 class="card-title">Distribución de Movimientos</h2>
+                            <p class="card-subtitle">Tipos de transacciones realizadas</p>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="distributionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Historial premium -->
+            <section class="card history-section fade-in-up delay-3">
+                <div class="card-header">
+                    <div class="card-icon history-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <div>
+                        <h2 class="card-title">Historial Detallado</h2>
+                        <p class="card-subtitle">Registro completo de todos tus movimientos</p>
+                    </div>
+                </div>
+                
+                <div class="history-controls">
+                    <div class="history-tabs">
+                        <div class="tab active" data-filter="all">Todos</div>
+                        <div class="tab" data-filter="deposit">Depósitos</div>
+                        <div class="tab" data-filter="withdrawal">Retiros</div>
+                        <div class="tab" data-filter="zero">Días Cero</div>
+                    </div>
+                    
+                    <div class="history-stats">
+                        <div class="history-stat">
+                            <div class="history-stat-value" id="totalDeposits">0</div>
+                            <div class="history-stat-label">Depósitos</div>
+                        </div>
+                        <div class="history-stat">
+                            <div class="history-stat-value" id="totalWithdrawals">0</div>
+                            <div class="history-stat-label">Retiros</div>
+                        </div>
+                        <div class="history-stat">
+                            <div class="history-stat-value" id="totalZeroDays">0</div>
+                            <div class="history-stat-label">Días Cero</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px;">
+                        <button class="btn btn-dark" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Exportar
+                        </button>
+                        <button class="btn btn-warning" id="clearHistoryBtn">
+                            <i class="fas fa-broom"></i> Limpiar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="history-container">
+                    <table class="history-table" id="historyTable">
+                        <thead>
+                            <tr>
+                                <th class="history-date-cell">Fecha</th>
+                                <th>Cantidad</th>
+                                <th>Descripción</th>
+                                <th>Balance</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody">
+                            <!-- Las filas se generarán con JavaScript -->
+                        </tbody>
+                    </table>
+                    
+                    <div id="emptyHistory" class="empty-history">
+                        <div class="empty-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <p class="empty-text">No hay registros de ahorro aún</p>
+                        <p style="color: var(--gray); max-width: 500px; margin: 0 auto;">¡Comienza agregando tu primer ahorro usando el formulario arriba!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Ahorro Elegante Premium PRO &copy; 2025-2026 | Diseñado con pasión para ayudarte a alcanzar tus metas</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">"El ahorro es la base de la fortuna" - Proverbio chino</p>
+        </footer>
+    </div>
+    
+    <!-- Notificación premium -->
+    <div id="notification" class="notification">
+        <div class="notification-icon"></div>
+        <div class="notification-content">
+            <div class="notification-title"></div>
+            <div class="notification-text"></div>
+        </div>
+    </div>
+    
+    <!-- Modal para editar transacción -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="modal-title">Editar Transacción</h3>
+            <div class="form-group">
+                <label class="form-label">Cantidad (MXN)</label>
+                <input type="number" id="editAmount" class="form-input" step="100">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Descripción</label>
+                <input type="text" id="editDescription" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Fecha</label>
+                <input type="date" id="editDate" class="form-input">
+            </div>
+            <div class="btn-container" style="margin-top: 30px;">
+                <button class="btn btn-success" id="saveEditBtn">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+                <button class="btn btn-dark" id="cancelEditBtn">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let currentSavings = 0;
+        const savingsGoal = 50000;
+        const startDate = new Date('2025-12-23');
+        const endDate = new Date('2026-12-31');
+        let savingsHistory = [];
+        let currentFilter = 'all';
+        let editingTransactionId = null;
+        let soundEnabled = true;
+        let darkMode = false;
+        let achievements = [
+            { id: 1, title: "Primer Ahorro", description: "Ahorra por primera vez", icon: "fas fa-star", threshold: 1, type: "count", unlocked: false },
+            { id: 2, title: "Primer Mil", description: "Ahorra $1,000 MXN", icon: "fas fa-money-bill-wave", threshold: 1000, type: "amount", unlocked: false },
+            { id: 3, title: "Consistencia", description: "Ahorra 7 días seguidos", icon: "fas fa-calendar-check", threshold: 7, type: "streak", unlocked: false },
+            { id: 4, title: "25% Completado", description: "Alcanza el 25% de tu meta", icon: "fas fa-chart-pie", threshold: 25, type: "percentage", unlocked: false },
+            { id: 5, title: "Mitad del Camino", description: "Alcanza el 50% de tu meta", icon: "fas fa-flag-checkered", threshold: 50, type: "percentage", unlocked: false },
+            { id: 6, title: "Gran Ahorrador", description: "Ahorra $10,000 MXN", icon: "fas fa-piggy-bank", threshold: 10000, type: "amount", unlocked: false },
+            { id: 7, title: "Consistencia Máxima", description: "Ahorra 30 días seguidos", icon: "fas fa-calendar-alt", threshold: 30, type: "streak", unlocked: false },
+            { id: 8, title: "75% Completado", description: "Alcanza el 75% de tu meta", icon: "fas fa-chart-line", threshold: 75, type: "percentage", unlocked: false },
+            { id: 9, title: "Meta Alcanzada", description: "¡Completa tu objetivo de ahorro!", icon: "fas fa-trophy", threshold: 100, type: "percentage", unlocked: false },
+            { id: 10, title: "Máximo Ahorrador", description: "Ahorra más de $50,000 MXN", icon: "fas fa-crown", threshold: 50000, type: "amount", unlocked: false }
+        ];
+        
+        // Gráficas
+        let savingsChart = null;
+        let distributionChart = null;
+        let currentChartType = 'line';
+        
+        // Elementos del DOM
+        const progressBar = document.getElementById('progressBar');
+        const currentSavingsElement = document.getElementById('currentSavings');
+        const remainingAmountElement = document.getElementById('remainingAmount');
+        const progressPercentageElement = document.getElementById('progressPercentage');
+        const progressPercentageValue = document.getElementById('progressPercentageValue');
+        const overlaySavings = document.getElementById('overlaySavings');
+        const daysPassedElement = document.getElementById('daysPassed');
+        const daysRemainingElement = document.getElementById('daysRemaining');
+        const dailyGoalElement = document.getElementById('dailyGoal');
+        const historyBody = document.getElementById('historyBody');
+        const emptyHistory = document.getElementById('emptyHistory');
+        const addSavingsBtn = document.getElementById('addSavingsBtn');
+        const addZeroBtn = document.getElementById('addZeroBtn');
+        const withdrawBtn = document.getElementById('withdrawBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const amountInput = document.getElementById('amount');
+        const descriptionInput = document.getElementById('description');
+        const uploadImageBtn = document.getElementById('uploadImageBtn');
+        const imageUpload = document.getElementById('imageUpload');
+        const goalImage = document.getElementById('goalImage');
+        const tabs = document.querySelectorAll('.tab');
+        const notification = document.getElementById('notification');
+        const notificationTitle = document.querySelector('.notification-title');
+        const notificationText = document.querySelector('.notification-text');
+        const notificationIcon = document.querySelector('.notification-icon');
+        const quickAmountBtns = document.querySelectorAll('.quick-btn');
+        const totalDepositsElement = document.getElementById('totalDeposits');
+        const totalWithdrawalsElement = document.getElementById('totalWithdrawals');
+        const totalZeroDaysElement = document.getElementById('totalZeroDays');
+        const editModal = document.getElementById('editModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editAmountInput = document.getElementById('editAmount');
+        const editDescriptionInput = document.getElementById('editDescription');
+        const editDateInput = document.getElementById('editDate');
+        const achievementsContainer = document.getElementById('achievementsContainer');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const soundToggle = document.getElementById('soundToggle');
+        const exportAllBtn = document.getElementById('exportAllBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const chartBtns = document.querySelectorAll('.chart-btn');
+        const savingsChartCanvas = document.getElementById('savingsChart');
+        const distributionChartCanvas = document.getElementById('distributionChart');
+        const goalAchievedElement = document.getElementById('goalAchieved');
+        const milestones = document.querySelectorAll('.milestone');
+        
+        // Sonidos
+        const soundDeposit = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-cash-register-bell-sale-1107.mp3');
+        const soundWithdrawal = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-game-show-wrong-answer-buzz-950.mp3');
+        const soundAchievement = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
+        const soundZeroDay = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+        const soundGoal = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-trumpet-2018.mp3');
+        
+        // Preload sounds
+        [soundDeposit, soundWithdrawal, soundAchievement, soundZeroDay, soundGoal].forEach(sound => {
+            sound.preload = 'auto';
+            sound.volume = 0.3;
+        });
+        
+        // Inicializar la aplicación
+        function initApp() {
+            loadSavingsData();
+            createParticles();
+            updateProgress();
+            updateDaysCounter();
+            updateHistoryStats();
+            renderHistory();
+            renderAchievements();
+            initCharts();
+            
+            // Configurar eventos
+            addSavingsBtn.addEventListener('click', addSavings);
+            addZeroBtn.addEventListener('click', addZeroDay);
+            withdrawBtn.addEventListener('click', withdrawSavings);
+            resetBtn.addEventListener('click', resetSavings);
+            exportBtn.addEventListener('click', exportHistory);
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            uploadImageBtn.addEventListener('click', () => imageUpload.click());
+            imageUpload.addEventListener('change', handleImageUpload);
+            
+            // Eventos para botones de cantidad rápida
+            quickAmountBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    amountInput.value = btn.dataset.amount;
+                    amountInput.focus();
+                });
+            });
+            
+            // Configurar pestañas del historial
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentFilter = tab.dataset.filter;
+                    renderHistory();
+                });
+            });
+            
+            // Configurar botones de gráficas
+            chartBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    chartBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentChartType = btn.dataset.chartType;
+                    updateSavingsChart();
+                });
+            });
+            
+            // Permitir usar Enter para agregar ahorro
+            amountInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addSavings();
+                }
+            });
+            
+            // Eventos del modal
+            closeModalBtn.addEventListener('click', closeEditModal);
+            cancelEditBtn.addEventListener('click', closeEditModal);
+            saveEditBtn.addEventListener('click', saveEdit);
+            
+            // Cerrar modal al hacer clic fuera
+            editModal.addEventListener('click', (e) => {
+                if (e.target === editModal) {
+                    closeEditModal();
+                }
+            });
+            
+            // Eventos de controles del header
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+            soundToggle.addEventListener('click', toggleSound);
+            exportAllBtn.addEventListener('click', exportAllData);
+            shareBtn.addEventListener('click', shareProgress);
+            
+            // Eventos de hitos
+            milestones.forEach(milestone => {
+                milestone.addEventListener('click', () => {
+                    const amount = milestone.dataset.amount;
+                    if (amount) {
+                        amountInput.value = amount;
+                        amountInput.focus();
+                        showNotification('Hito Seleccionado', `Cantidad establecida a $${formatCurrency(amount)}`, 'info');
+                    }
+                });
+            });
+            
+            // Actualizar cada 24 horas
+            setInterval(updateDaysCounter, 24 * 60 * 60 * 1000);
+            
+            // Efecto de partículas
+            window.addEventListener('resize', createParticles);
+            
+            // Verificar si se alcanzó la meta
+            checkGoalAchievement();
+        }
+        
+        // Crear efecto de partículas
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            particlesContainer.innerHTML = '';
+            
+            const particleCount = Math.min(Math.floor(window.innerWidth / 20), 50);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 60 + 20;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                particle.style.opacity = Math.random() * 0.1 + 0.05;
+                
+                // Animación flotante
+                particle.style.animation = `float ${Math.random() * 20 + 10}s infinite ease-in-out`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Inicializar gráficas
+        function initCharts() {
+            // Gráfica de ahorros
+            const savingsCtx = savingsChartCanvas.getContext('2d');
+            savingsChart = new Chart(savingsCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Ahorro Acumulado',
+                        data: [],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Ahorro: $${formatCurrency(context.raw)}`;
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                goalLine: {
+                                    type: 'line',
+                                    yMin: savingsGoal,
+                                    yMax: savingsGoal,
+                                    borderColor: '#10b981',
+                                    borderWidth: 2,
+                                    borderDash: [10, 5],
+                                    label: {
+                                        content: `Meta: $${formatCurrency(savingsGoal)}`,
+                                        enabled: true,
+                                        position: 'end',
+                                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                                        color: 'white',
+                                        font: {
+                                            size: 12,
+                                            weight: 'bold'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return `$${formatCurrency(value)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfica de distribución
+            const distributionCtx = distributionChartCanvas.getContext('2d');
+            distributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Depósitos', 'Retiros', 'Días Cero'],
+                    datasets: [{
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(16, 185, 129)',
+                            'rgb(239, 68, 68)',
+                            'rgb(245, 158, 11)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            updateCharts();
+        }
+        
+        // Actualizar gráficas
+        function updateCharts() {
+            updateSavingsChart();
+            updateDistributionChart();
+        }
+        
+        // Actualizar gráfica de ahorros
+        function updateSavingsChart() {
+            if (!savingsChart) return;
+            
+            // Cambiar tipo de gráfica
+            savingsChart.config.type = currentChartType;
+            
+            // Preparar datos para la gráfica
+            const sortedHistory = [...savingsHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+            
+            if (sortedHistory.length === 0) {
+                savingsChart.data.labels = ['Inicio'];
+                savingsChart.data.datasets[0].data = [0];
+            } else {
+                let cumulativeSavings = 0;
+                const labels = [];
+                const data = [];
+                
+                // Agregar punto de inicio
+                labels.push(new Date(startDate).toLocaleDateString('es-MX', { month: 'short', day: 'numeric' }));
+                data.push(0);
+                
+                // Agregar cada transacción
+                sortedHistory.forEach(transaction => {
+                    if (transaction.type !== 'zero') {
+                        cumulativeSavings += transaction.amount;
+                    }
+                    
+                    labels.push(transaction.displayDate);
+                    data.push(cumulativeSavings);
+                });
+                
+                savingsChart.data.labels = labels;
+                savingsChart.data.datasets[0].data = data;
+            }
+            
+            savingsChart.update();
+        }
+        
+        // Actualizar gráfica de distribución
+        function updateDistributionChart() {
+            if (!distributionChart) return;
+            
+            const deposits = savingsHistory.filter(t => t.type === 'deposit').length;
+            const withdrawals = savingsHistory.filter(t => t.type === 'withdrawal').length;
+            const zeroDays = savingsHistory.filter(t => t.type === 'zero').length;
+            
+            distributionChart.data.datasets[0].data = [deposits, withdrawals, zeroDays];
+            distributionChart.update();
+        }
+        
+        // Renderizar logros
+        function renderAchievements() {
+            achievementsContainer.innerHTML = '';
+            
+            achievements.forEach(achievement => {
+                const progress = calculateAchievementProgress(achievement);
+                const isUnlocked = progress >= 100;
+                
+                const achievementElement = document.createElement('div');
+                achievementElement.className = `achievement ${isUnlocked ? 'unlocked' : ''}`;
+                achievementElement.innerHTML = `
+                    <div class="achievement-icon">
+                        <i class="${achievement.icon}"></i>
+                    </div>
+                    <div class="achievement-title">${achievement.title}</div>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar" style="width: ${progress}%"></div>
+                    </div>
+                `;
+                
+                achievementElement.addEventListener('click', () => {
+                    showNotification(achievement.title, achievement.description, isUnlocked ? 'success' : 'info');
+                });
+                
+                achievementsContainer.appendChild(achievementElement);
+            });
+        }
+        
+        // Calcular progreso de logro
+        function calculateAchievementProgress(achievement) {
+            switch(achievement.type) {
+                case 'count':
+                    const transactionCount = savingsHistory.filter(t => t.type === 'deposit').length;
+                    return Math.min((transactionCount / achievement.threshold) * 100, 100);
+                case 'amount':
+                    const totalSaved = savingsHistory
+                        .filter(t => t.type === 'deposit')
+                        .reduce((sum, t) => sum + t.amount, 0);
+                    return Math.min((totalSaved / achievement.threshold) * 100, 100);
+                case 'percentage':
+                    const progressPercentage = Math.min((currentSavings / savingsGoal) * 100, 100);
+                    return Math.min((progressPercentage / achievement.threshold) * 100, 100);
+                case 'streak':
+                    // Calcular racha actual
+                    let currentStreak = 0;
+                    let lastDate = null;
+                    
+                    const sortedHistory = [...savingsHistory]
+                        .filter(t => t.type === 'deposit')
+                        .sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    for (const transaction of sortedHistory) {
+                        const transactionDate = new Date(transaction.date);
+                        
+                        if (!lastDate) {
+                            lastDate = transactionDate;
+                            currentStreak = 1;
+                        } else {
+                            const dayDiff = Math.floor((lastDate - transactionDate) / (1000 * 60 * 60 * 24));
+                            if (dayDiff === 1) {
+                                currentStreak++;
+                                lastDate = transactionDate;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    
+                    return Math.min((currentStreak / achievement.threshold) * 100, 100);
+                default:
+                    return 0;
+            }
+        }
+        
+        // Verificar y desbloquear logros
+        function checkAchievements() {
+            let newAchievements = 0;
+            
+            achievements.forEach(achievement => {
+                if (!achievement.unlocked) {
+                    const progress = calculateAchievementProgress(achievement);
+                    
+                    if (progress >= 100) {
+                        achievement.unlocked = true;
+                        newAchievements++;
+                        
+                        // Reproducir sonido
+                        if (soundEnabled) {
+                            soundAchievement.currentTime = 0;
+                            soundAchievement.play().catch(e => console.log("Error al reproducir sonido:", e));
+                        }
+                        
+                        // Mostrar notificación
+                        showNotification('¡Logro Desbloqueado!', achievement.title, 'success');
+                        
+                        // Efecto de confeti
+                        if (newAchievements === 1) {
+                            createConfetti();
+                        }
+                    }
+                }
+            });
+            
+            if (newAchievements > 0) {
+                renderAchievements();
+                saveSavingsData();
+            }
+        }
+        
+        // Crear efecto de confeti
+        function createConfetti() {
+            const colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Posición aleatoria en la parte superior
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = `${Math.random() * 100}%`;
+                
+                // Color aleatorio
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                
+                // Forma aleatoria (círculo o rectángulo)
+                if (Math.random() > 0.5) {
+                    confetti.style.borderRadius = '50%';
+                }
+                
+                // Animación
+                confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear forwards`;
+                confetti.style.opacity = '1';
+                
+                document.body.appendChild(confetti);
+                
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+            
+            // Añadir estilos de animación de confeti si no existen
+            if (!document.querySelector('#confetti-animation')) {
+                const style = document.createElement('style');
+                style.id = 'confetti-animation';
+                style.textContent = `
+                    @keyframes confettiFall {
+                        0% {
+                            transform: translateY(-100px) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% {
+                            transform: translateY(100vh) rotate(720deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Cargar datos desde localStorage
+        function loadSavingsData() {
+            const savedData = localStorage.getItem('premiumMotoSavingsPro');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                currentSavings = data.currentSavings || 0;
+                savingsHistory = data.savingsHistory || [];
+                achievements = data.achievements || achievements;
+                
+                // Cargar imagen guardada
+                const savedImage = localStorage.getItem('motoImagePremiumPro');
+                if (savedImage) {
+                    goalImage.src = savedImage;
+                }
+                
+                // Cargar configuración
+                soundEnabled = data.soundEnabled !== undefined ? data.soundEnabled : true;
+                darkMode = data.darkMode || false;
+                
+                // Aplicar modo oscuro si está activado
+                if (darkMode) {
+                    enableDarkMode();
+                }
+                
+                // Actualizar botones de configuración
+                updateConfigButtons();
+            }
+        }
+        
+        // Guardar datos en localStorage
+        function saveSavingsData() {
+            const data = {
+                currentSavings,
+                savingsHistory,
+                achievements,
+                soundEnabled,
+                darkMode
+            };
+            localStorage.setItem('premiumMotoSavingsPro', JSON.stringify(data));
+        }
+        
+        // Actualizar la barra de progreso
+        function updateProgress() {
+            const progressPercentage = Math.min((currentSavings / savingsGoal) * 100, 100);
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            progressPercentageElement.textContent = `${progressPercentage.toFixed(1)}%`;
+            progressPercentageValue.textContent = `${progressPercentage.toFixed(1)}%`;
+            
+            currentSavingsElement.textContent = `$${formatCurrency(currentSavings)}`;
+            overlaySavings.textContent = `$${formatCurrency(currentSavings)}`;
+            
+            const remaining = Math.max(savingsGoal - currentSavings, 0);
+            remainingAmountElement.textContent = `$${formatCurrency(remaining)}`;
+            
+            // Actualizar hitos de progreso
+            document.querySelectorAll('.milestone').forEach(milestone => {
+                const percent = parseInt(milestone.dataset.percent);
+                milestone.classList.toggle('active', progressPercentage >= percent);
+            });
+            
+            // Verificar si se alcanzó la meta
+            checkGoalAchievement();
+            
+            // Verificar logros
+            checkAchievements();
+            
+            saveSavingsData();
+        }
+        
+        // Verificar si se alcanzó la meta
+        function checkGoalAchievement() {
+            if (currentSavings >= savingsGoal) {
+                goalAchievedElement.style.opacity = '1';
+                
+                // Reproducir sonido de meta alcanzada
+                if (soundEnabled) {
+                    soundGoal.currentTime = 0;
+                    soundGoal.play().catch(e => console.log("Error al reproducir sonido:", e));
+                }
+                
+                // Crear confeti
+                if (!document.querySelector('.confetti')) {
+                    createConfetti();
+                }
+            } else {
+                goalAchievedElement.style.opacity = '0';
+            }
+        }
+        
+        // Actualizar contador de días
+        function updateDaysCounter() {
+            const today = new Date();
+            const timeDiff = today.getTime() - startDate.getTime();
+            const daysPassed = Math.max(Math.floor(timeDiff / (1000 * 3600 * 24)), 0);
+            
+            const remainingTimeDiff = endDate.getTime() - today.getTime();
+            let daysRemaining = Math.max(Math.ceil(remainingTimeDiff / (1000 * 3600 * 24)), 0);
+            
+            // Calcular meta diaria
+            const remainingAmount = Math.max(savingsGoal - currentSavings, 0);
+            const dailyGoal = daysRemaining > 0 ? Math.ceil(remainingAmount / daysRemaining) : 0;
+            
+            daysPassedElement.textContent = daysPassed;
+            daysRemainingElement.textContent = daysRemaining;
+            dailyGoalElement.textContent = `$${formatCurrency(dailyGoal)}`;
+        }
+        
+        // Actualizar estadísticas del historial
+        function updateHistoryStats() {
+            const deposits = savingsHistory.filter(t => t.type === 'deposit').length;
+            const withdrawals = savingsHistory.filter(t => t.type === 'withdrawal').length;
+            const zeroDays = savingsHistory.filter(t => t.type === 'zero').length;
+            
+            totalDepositsElement.textContent = deposits;
+            totalWithdrawalsElement.textContent = withdrawals;
+            totalZeroDaysElement.textContent = zeroDays;
+        }
+        
+        // Agregar ahorro
+        function addSavings() {
+            const amount = parseFloat(amountInput.value);
+            const description = descriptionInput.value || 'Ahorro';
+            
+            if (isNaN(amount)) {
+                showNotification('Error', 'Por favor ingresa una cantidad válida', 'error');
+                return;
+            }
+            
+            if (amount === 0) {
+                addZeroDay();
+                return;
+            }
+            
+            if (amount < 0 && Math.abs(amount) > currentSavings) {
+                showNotification('Error', 'No tienes suficiente dinero ahorrado para retirar esa cantidad', 'error');
+                return;
+            }
+            
+            currentSavings += amount;
+            
+            // Agregar al historial
+            const transaction = {
+                id: Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                displayDate: new Date().toLocaleDateString('es-MX'),
+                day: getDayOfWeek(new Date()),
+                amount: amount,
+                description: description,
+                type: amount > 0 ? 'deposit' : 'withdrawal'
+            };
+            
+            savingsHistory.unshift(transaction);
+            
+            // Reproducir sonido
+            if (soundEnabled) {
+                if (amount > 0) {
+                    soundDeposit.currentTime = 0;
+                    soundDeposit.play().catch(e => console.log("Error al reproducir sonido:", e));
+                } else {
+                    soundWithdrawal.currentTime = 0;
+                    soundWithdrawal.play().catch(e => console.log("Error al reproducir sonido:", e));
+                }
+            }
+            
+            // Limpiar campos
+            amountInput.value = '';
+            descriptionInput.value = '';
+            
+            // Actualizar UI
+            updateProgress();
+            updateHistoryStats();
+            renderHistory();
+            updateCharts();
+            
+            // Mostrar mensaje de éxito
+            const message = amount > 0 
+                ? `¡Has ahorrado $${formatCurrency(amount)} MXN!` 
+                : `Has retirado $${formatCurrency(Math.abs(amount))} MXN`;
+            const title = amount > 0 ? '¡Ahorro Registrado!' : 'Retiro Realizado';
+            showNotification(title, message, amount > 0 ? 'success' : 'warning');
+        }
+        
+        // Agregar día sin ahorro (0 pesos)
+        function addZeroDay() {
+            const description = descriptionInput.value || 'Día sin ahorro';
+            
+            // Agregar al historial
+            const transaction = {
+                id: Date.now(),
+                date: new Date().toISOString().split('T')[0],
+                displayDate: new Date().toLocaleDateString('es-MX'),
+                day: getDayOfWeek(new Date()),
+                amount: 0,
+                description: description,
+                type: 'zero'
+            };
+            
+            savingsHistory.unshift(transaction);
+            
+            // Reproducir sonido
+            if (soundEnabled) {
+                soundZeroDay.currentTime = 0;
+                soundZeroDay.play().catch(e => console.log("Error al reproducir sonido:", e));
+            }
+            
+            // Limpiar campos
+            amountInput.value = '';
+            descriptionInput.value = '';
+            
+            // Actualizar UI
+            updateHistoryStats();
+            renderHistory();
+            updateCharts();
+            
+            showNotification('Día Sin Ahorro', 'Registrado día sin ahorro', 'info');
+        }
+        
+        // Retirar ahorro
+        function withdrawSavings() {
+            const amount = parseFloat(amountInput.value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                showNotification('Error', 'Para retirar, ingresa una cantidad positiva y usa el botón "Retirar"', 'error');
+                return;
+            }
+            
+            if (amount > currentSavings) {
+                showNotification('Error', 'No tienes suficiente dinero ahorrado para retirar esa cantidad', 'error');
+                return;
+            }
+            
+            // Convertir a negativo para retiro
+            amountInput.value = -amount;
+            addSavings();
+        }
+        
+        // Eliminar transacción del historial
+        function deleteTransaction(id) {
+            if (!confirm('¿Estás seguro de que quieres eliminar esta transacción?')) return;
+            
+            const transaction = savingsHistory.find(t => t.id === id);
+            if (!transaction) return;
+            
+            // Restar del ahorro actual si no es un día sin ahorro
+            if (transaction.type !== 'zero') {
+                currentSavings -= transaction.amount;
+            }
+            
+            // Eliminar del historial
+            savingsHistory = savingsHistory.filter(t => t.id !== id);
+            
+            // Actualizar UI
+            updateProgress();
+            updateHistoryStats();
+            renderHistory();
+            updateCharts();
+            
+            showNotification('Transacción Eliminada', 'La transacción ha sido eliminada del historial', 'info');
+        }
+        
+        // Editar transacción
+        function editTransaction(id) {
+            const transaction = savingsHistory.find(t => t.id === id);
+            if (!transaction) return;
+            
+            editingTransactionId = id;
+            
+            // Rellenar formulario de edición
+            editAmountInput.value = transaction.amount;
+            editDescriptionInput.value = transaction.description;
+            editDateInput.value = transaction.date;
+            
+            // Mostrar modal
+            editModal.classList.add('active');
+        }
+        
+        // Guardar edición
+        function saveEdit() {
+            if (!editingTransactionId) return;
+            
+            const amount = parseFloat(editAmountInput.value);
+            const description = editDescriptionInput.value;
+            const date = editDateInput.value;
+            
+            if (isNaN(amount)) {
+                showNotification('Error', 'Por favor ingresa una cantidad válida', 'error');
+                return;
+            }
+            
+            const transactionIndex = savingsHistory.findIndex(t => t.id === editingTransactionId);
+            if (transactionIndex === -1) return;
+            
+            const oldTransaction = savingsHistory[transactionIndex];
+            const oldAmount = oldTransaction.amount;
+            const oldType = oldTransaction.type;
+            
+            // Calcular nuevo tipo
+            const newType = amount > 0 ? 'deposit' : amount < 0 ? 'withdrawal' : 'zero';
+            
+            // Actualizar ahorro actual
+            if (oldType !== 'zero') {
+                currentSavings -= oldAmount;
+            }
+            
+            if (newType !== 'zero') {
+                currentSavings += amount;
+            }
+            
+            // Actualizar transacción
+            savingsHistory[transactionIndex] = {
+                ...oldTransaction,
+                amount: amount,
+                description: description,
+                date: date,
+                displayDate: new Date(date).toLocaleDateString('es-MX'),
+                day: getDayOfWeek(new Date(date)),
+                type: newType
+            };
+            
+            // Cerrar modal y actualizar UI
+            closeEditModal();
+            updateProgress();
+            updateHistoryStats();
+            renderHistory();
+            updateCharts();
+            
+            showNotification('Transacción Editada', 'Los cambios han sido guardados exitosamente', 'success');
+        }
+        
+        // Cerrar modal de edición
+        function closeEditModal() {
+            editModal.classList.remove('active');
+            editingTransactionId = null;
+            editAmountInput.value = '';
+            editDescriptionInput.value = '';
+            editDateInput.value = '';
+        }
+        
+        // Renderizar historial
+        function renderHistory() {
+            // Filtrar según la pestaña activa
+            let filteredHistory = savingsHistory;
+            if (currentFilter !== 'all') {
+                filteredHistory = savingsHistory.filter(transaction => {
+                    if (currentFilter === 'zero') return transaction.type === 'zero';
+                    if (currentFilter === 'deposit') return transaction.type === 'deposit';
+                    if (currentFilter === 'withdrawal') return transaction.type === 'withdrawal';
+                    return true;
+                });
+            }
+            
+            if (filteredHistory.length === 0) {
+                historyBody.innerHTML = '';
+                emptyHistory.style.display = 'block';
+                return;
+            }
+            
+            emptyHistory.style.display = 'none';
+            let historyHTML = '';
+            
+            // Calcular balance acumulado
+            let cumulativeBalance = 0;
+            
+            filteredHistory.forEach(transaction => {
+                // Actualizar balance acumulado
+                if (transaction.type !== 'zero') {
+                    cumulativeBalance += transaction.amount;
+                }
+                
+                let amountClass = 'amount-positive';
+                if (transaction.amount < 0) amountClass = 'amount-negative';
+                if (transaction.amount === 0) amountClass = 'amount-zero';
+                
+                const amountSign = transaction.amount > 0 ? '+' : '';
+                const amountDisplay = transaction.amount === 0 
+                    ? '$0' 
+                    : `${amountSign}$${formatCurrency(Math.abs(transaction.amount))}`;
+                
+                // Icono según tipo
+                let typeIcon = 'fas fa-plus-circle';
+                if (transaction.type === 'withdrawal') typeIcon = 'fas fa-minus-circle';
+                if (transaction.type === 'zero') typeIcon = 'far fa-calendar-times';
+                
+                historyHTML += `
+                    <tr>
+                        <td class="history-date-cell">
+                            <div class="history-date">${transaction.displayDate}</div>
+                            <span class="history-day">${transaction.day}</span>
+                        </td>
+                        <td>
+                            <div class="history-amount ${amountClass}">
+                                <i class="${typeIcon}" style="margin-right: 10px;"></i>
+                                ${amountDisplay}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="history-description">${transaction.description}</div>
+                        </td>
+                        <td>
+                            <div class="history-amount ${cumulativeBalance >= 0 ? 'amount-positive' : 'amount-negative'}">
+                                $${formatCurrency(cumulativeBalance)}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="history-actions">
+                                <button class="action-btn edit" onclick="editTransaction(${transaction.id})" title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete" onclick="deleteTransaction(${transaction.id})" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            historyBody.innerHTML = historyHTML;
+        }
+        
+        // Reiniciar ahorros
+        function resetSavings() {
+            if (confirm('¿Estás seguro de que quieres reiniciar todos tus ahorros y el historial? Esta acción no se puede deshacer.')) {
+                currentSavings = 0;
+                savingsHistory = [];
+                
+                // Resetear logros
+                achievements.forEach(achievement => {
+                    achievement.unlocked = false;
+                });
+                
+                updateProgress();
+                updateHistoryStats();
+                renderHistory();
+                updateCharts();
+                renderAchievements();
+                
+                showNotification('Ahorros Reiniciados', 'Todos los datos han sido reiniciados correctamente', 'info');
+            }
+        }
+        
+        // Limpiar historial
+        function clearHistory() {
+            if (confirm('¿Estás seguro de que quieres limpiar todo el historial? Esta acción no se puede deshacer.')) {
+                savingsHistory = [];
+                updateHistoryStats();
+                renderHistory();
+                updateCharts();
+                
+                showNotification('Historial Limpiado', 'El historial ha sido limpiado correctamente', 'info');
+            }
+        }
+        
+        // Exportar historial
+        function exportHistory() {
+            if (savingsHistory.length === 0) {
+                showNotification('Sin Datos', 'No hay datos para exportar', 'warning');
+                return;
+            }
+            
+            let csvContent = "Fecha,Día,Cantidad,Descripción,Tipo,Balance\n";
+            
+            let cumulativeBalance = 0;
+            
+            savingsHistory.forEach(transaction => {
+                // Actualizar balance acumulado
+                if (transaction.type !== 'zero') {
+                    cumulativeBalance += transaction.amount;
+                }
+                
+                const typeText = transaction.type === 'deposit' ? 'Depósito' : 
+                               transaction.type === 'withdrawal' ? 'Retiro' : 'Día sin ahorro';
+                const row = [
+                    transaction.displayDate,
+                    transaction.day,
+                    transaction.amount,
+                    `"${transaction.description}"`,
+                    typeText,
+                    cumulativeBalance
+                ].join(',');
+                
+                csvContent += row + "\n";
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `historial-ahorro-premium-pro-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Exportación Exitosa', 'El historial ha sido exportado como archivo CSV', 'success');
+        }
+        
+        // Exportar todos los datos
+        function exportAllData() {
+            const data = {
+                currentSavings,
+                savingsGoal,
+                progressPercentage: Math.min((currentSavings / savingsGoal) * 100, 100),
+                daysPassed: document.getElementById('daysPassed').textContent,
+                daysRemaining: document.getElementById('daysRemaining').textContent,
+                dailyGoal: document.getElementById('dailyGoal').textContent,
+                transactions: savingsHistory,
+                achievements: achievements.filter(a => a.unlocked).map(a => a.title),
+                lastUpdated: new Date().toISOString()
+            };
+            
+            const jsonContent = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonContent], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `ahorro-premium-pro-datos-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Exportación Completa', 'Todos los datos han sido exportados como JSON', 'success');
+        }
+        
+        // Compartir progreso
+        function shareProgress() {
+            const progressPercentage = Math.min((currentSavings / savingsGoal) * 100, 100);
+            const shareText = `¡He ahorrado el ${progressPercentage.toFixed(1)}% de mi meta para mi moto! $${formatCurrency(currentSavings)} / $${formatCurrency(savingsGoal)} #AhorroElegantePremium`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Mi Progreso de Ahorro',
+                    text: shareText,
+                    url: window.location.href
+                })
+                .then(() => showNotification('Compartido', 'Tu progreso ha sido compartido', 'success'))
+                .catch(err => {
+                    console.log('Error al compartir:', err);
+                    copyToClipboard(shareText);
+                });
+            } else {
+                copyToClipboard(shareText);
+            }
+        }
+        
+        // Copiar al portapapeles
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => showNotification('Copiado', 'El texto ha sido copiado al portapapeles', 'success'))
+                .catch(err => {
+                    console.log('Error al copiar:', err);
+                    showNotification('Error', 'No se pudo copiar al portapapeles', 'error');
+                });
+        }
+        
+        // Alternar modo oscuro
+        function toggleDarkMode() {
+            darkMode = !darkMode;
+            
+            if (darkMode) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+            
+            updateConfigButtons();
+            saveSavingsData();
+        }
+        
+        // Habilitar modo oscuro
+        function enableDarkMode() {
+            document.documentElement.style.setProperty('--primary', '#f8fafc');
+            document.documentElement.style.setProperty('--dark', '#f8fafc');
+            document.documentElement.style.setProperty('--light', '#0f172a');
+            document.documentElement.style.setProperty('--light-gray', '#1e293b');
+            document.documentElement.style.setProperty('--card-bg', '#1e293b');
+            document.documentElement.style.setProperty('--gray', '#94a3b8');
+            
+            document.body.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)';
+            document.body.style.color = '#f8fafc';
+            
+            darkModeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Modo Claro</span>';
+        }
+        
+        // Deshabilitar modo oscuro
+        function disableDarkMode() {
+            document.documentElement.style.setProperty('--primary', '#0f172a');
+            document.documentElement.style.setProperty('--dark', '#0f172a');
+            document.documentElement.style.setProperty('--light', '#f8fafc');
+            document.documentElement.style.setProperty('--light-gray', '#f1f5f9');
+            document.documentElement.style.setProperty('--card-bg', '#ffffff');
+            document.documentElement.style.setProperty('--gray', '#64748b');
+            
+            document.body.style.background = 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)';
+            document.body.style.color = '#0f172a';
+            
+            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Modo Oscuro</span>';
+        }
+        
+        // Alternar sonido
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            updateConfigButtons();
+            saveSavingsData();
+            
+            showNotification(
+                soundEnabled ? 'Sonido Activado' : 'Sonido Desactivado',
+                soundEnabled ? 'Los sonidos están ahora activados' : 'Los sonidos están ahora desactivados',
+                'info'
+            );
+        }
+        
+        // Actualizar botones de configuración
+        function updateConfigButtons() {
+            soundToggle.innerHTML = soundEnabled 
+                ? '<i class="fas fa-volume-up"></i><span>Sonido ON</span>'
+                : '<i class="fas fa-volume-mute"></i><span>Sonido OFF</span>';
+        }
+        
+        // Manejar carga de imagen
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Verificar tipo de archivo
+            if (!file.type.match('image.*')) {
+                showNotification('Error', 'Por favor selecciona un archivo de imagen válido', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                goalImage.src = e.target.result;
+                
+                // Guardar imagen en localStorage
+                localStorage.setItem('motoImagePremiumPro', e.target.result);
+                
+                showNotification('Imagen Actualizada', 'La imagen de tu moto ha sido actualizada exitosamente', 'success');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Mostrar notificación
+        function showNotification(title, message, type) {
+            notificationTitle.textContent = title;
+            notificationText.textContent = message;
+            
+            // Configurar según el tipo
+            notification.className = 'notification';
+            
+            if (type === 'success') {
+                notification.classList.add('notification-success');
+                notificationIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'warning') {
+                notification.classList.add('notification-warning');
+                notificationIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+            } else if (type === 'error') {
+                notification.classList.add('notification-error');
+                notificationIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+            } else {
+                notification.classList.add('notification-info');
+                notificationIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
+            }
+            
+            notification.classList.add('show');
+            
+            // Ocultar después de 5 segundos
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Obtener día de la semana en español
+        function getDayOfWeek(date) {
+            const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            return days[new Date(date).getDay()];
+        }
+        
+        // Formatear moneda
+        function formatCurrency(amount) {
+            return amount.toLocaleString('es-MX', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            });
+        }
+        
+        // Inicializar la aplicación cuando se carga la página
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
